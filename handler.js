@@ -404,13 +404,13 @@ export async function handler(chatUpdate) {
 global.dfail = (type, m, conn, usedPrefix) => {
     let msg = {
         rowner: `Hola, este comando solo puede ser utilizado por el *Creador* de la Bot.`,
-        owner: `Hola, este comando solo puede ser utilizado por el *Creador* del Bot y *Sub Bots*.`,
-        mods: `Hola, este comando solo puede ser utilizado por los *Moderadores* de la Bot.`,
-        premium: `Hola, este comando solo puede ser utilizado por Usuarios *Premium*.`,
-        group: `Hola, este comando solo puede ser utilizado en *Grupos*.`,
-        private: `Hola, este comando solo puede ser utilizado en mi Chat *Privado*.`,
+        owner: `> Hola, este comando solo puede ser utilizado por el *Creador* del Bot y *Sub Bots*.`,
+        mods: `> Hola, este comando solo puede ser utilizado por los *Moderadores* de la Bot.`,
+        premium: `> Hola, este comando solo puede ser utilizado por Usuarios *Premium*.`,
+        group: `*Hola, este comando solo puede ser utilizado en Grupos*.`,
+        private: `> Hola, este comando solo puede ser utilizado en mi Chat *Privado*.`,
         admin: `Hola, este comando solo puede ser utilizado por los *Administradores* del Grupo.`,
-        botAdmin: `Hola, la bot debe ser *Administradora* para ejecutar este Comando.`,
+        botAdmin: `Hola, el bot debe ser *Administrador* para ejecutar este Comando.`,
         unreg: `Hola, para usar este comando debes estar *Registrado.*\n\nUtiliza: */reg nombre.edad*\n\n> _Ejemplo de uso: */reg Enzo.66*_`,
         restrict: `> Hola, esta característica está *deshabilitada.*`  
     }[type]
