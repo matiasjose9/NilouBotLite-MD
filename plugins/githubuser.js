@@ -2,7 +2,7 @@ import fetch from 'node-fetch';
 
 let handler = async (m, { args }) => {
     if (!args[0]) {
-        return conn.reply(m.chat, `Ingresa un nombre de usuario de GitHub.`, m);
+        return m.reply(`Ingresa un nombre de usuario de GitHub.`);
     }
 
     let query = args.join(' ');
@@ -16,7 +16,7 @@ let handler = async (m, { args }) => {
 
         let users = await response.json();
         if (users.length === 0) {
-            return conn.reply(m.chat, `No se encontraron usuarios con el nombre: ${query}`, m);
+            return m.reply(`No se encontraron usuarios con el nombre: ${query}`);
         }
 
         let user = users[0];
@@ -27,10 +27,10 @@ let handler = async (m, { args }) => {
         txt += `❥︎ *URL de Repositorios*: ${user.public_repos}\n`;
         txt += `❥︎ *URL de Seguidores*: ${user.followers}\n`;
 
-        await conn.reply(m.chat, txt, m);
+        await m.reply(txt);
     } catch (error) {
         console.error('Error fetching data from API:', error);
-        await conn.reply(m.chat, `Hubo un error al buscar el usuario de GitHub: ${error.message}`, m);
+        await m.reply(`Hubo un error al buscar el usuario de GitHub: ${error.message}`);
     }
 };
 
