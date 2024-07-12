@@ -1,42 +1,41 @@
 import fetch from 'node-fetch';
 
-let handler = async (m, { args }) => {
-    if (!args[0]) {
-        return m.reply(`Ingresa un nombre de usuario de GitHub.`);
+let handler = async (m, { args, usedPrefix, command }) => {
+  if (!args[0]) {
+    return conn.reply(m.chat, 'Ingrese un término de búsqueda para YouTube.', m);
+  }
+
+  let query = args.join(' ');
+  let url = `http://192.101.68.21:2070/youtube/videos?q=${encodeURIComponent(query)}`;
+
+  try {
+    let response = await fetch(url);
+    let results = await response.json();
+
+    if (results.length === 0) {
+      return conn.reply(m.chat, 'No se encontraron videos para la búsqueda proporcionada.', m);
     }
 
-    let query = args.join(' ');
-    let apiUrl = `http://192.101.68.21:2070/github/users?q=${encodeURIComponent(query)}`;
+    let video = results[0];
+    let message = `*Resultados de YouTube*\n\n`;
+    message += `❥︎ *Título*: ${video.title}\n`;
+    message += `❥︎ *Autor*: ${video.author}\n`;
+    message += `❥︎ *Duración*: ${video.duration}\n`;
+    message += `❥︎ *Vistas*: ${video.views}\n`;
+    message += `❥︎ *Publicado*: ${video.uploaded}\n`;
+    message += `❥︎ *Enlace*: ${video.link}\n\n`;
+    message += `🚩 *API creada por https://www.github.com/matias-crypto*`;
 
-    try {
-        let response = await fetch(apiUrl);
-        if (!response.ok) {
-            throw new Error(`Error al buscar el usuario: ${response.statusText}`);
-        }
-
-        let users = await response.json();
-        if (users.length === 0) {
-            return m.reply(`No se encontraron usuarios con el nombre: ${query}`);
-        }
-
-        let user = users[0];
-        let txt = `*Información del Usuario de GitHub*\n\n`;
-        txt += `❥︎ *Nombre de Usuario*: ${user.login}\n`;
-        txt += `❥︎ *ID*: ${user.id}\n`;
-        txt += `❥︎ *URL del Perfil*: ${user.url}\n`;
-        txt += `❥︎ *URL de Repositorios*: ${user.public_repos}\n`;
-        txt += `❥︎ *URL de Seguidores*: ${user.followers}\n`;
-
-        await m.reply(txt);
-    } catch (error) {
-        console.error('Error fetching data from API:', error);
-        await m.reply(`Hubo un error al buscar el usuario de GitHub: ${error.message}`);
-    }
+    await conn.reply(m.chat, message, m);
+  } catch (error) {
+    console.error('Error fetching data from YouTube:', error);
+    await conn.reply(m.chat, 'Hubo un error al buscar el video en YouTube.', m);
+  }
 };
 
-handler.help = ['githubuser <texto>'];
-handler.tags = ['info'];
-handler.command = /^(githubuser)$/i;
+handler.help = ['yts <término de búsqueda>'];
+handler.tags = ['search'];
+handler.command = /^(yts)$/i;
 handler.register = true;
 
 export default handler;
