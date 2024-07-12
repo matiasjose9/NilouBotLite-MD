@@ -1,4 +1,4 @@
-import fetch from 'node-fetch'
+import fetch from 'node-fetch';
 
 let handler = async (m, { args }) => {
     if (!args[0]) {
@@ -10,8 +10,11 @@ let handler = async (m, { args }) => {
 
     try {
         let response = await fetch(apiUrl);
-        let users = await response.json();
+        if (!response.ok) {
+            throw new Error(`Error al buscar el usuario: ${response.statusText}`);
+        }
 
+        let users = await response.json();
         if (users.length === 0) {
             return conn.reply(m.chat, `No se encontraron usuarios con el nombre: ${query}`, m);
         }
@@ -27,7 +30,7 @@ let handler = async (m, { args }) => {
         await conn.reply(m.chat, txt, m);
     } catch (error) {
         console.error('Error fetching data from API:', error);
-        await conn.reply(m.chat, `Hubo un error al buscar el usuario de GitHub.`, m);
+        await conn.reply(m.chat, `Hubo un error al buscar el usuario de GitHub: ${error.message}`, m);
     }
 };
 
