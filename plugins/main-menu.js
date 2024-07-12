@@ -12,7 +12,8 @@ let tags = {
   'sticker': 'STICKERS',
   'owner': 'CREADOR',
   'nilou': 'NILOU-INFO',
-  'imagen': 'IMAGENES'
+  'imagen': 'IMAGENES',
+  'jadibots': 'JADIBOTS'
 }
 
 const defaultMenu = {
